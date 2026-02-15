@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spesial Untukmu ❤️</title>
+  <style>
+    :root {
+      --pink: #ff66b2;
+      --bg: #ffe6f2;
+      --heart: #d50000;
+      --text: #880e4f;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffc1e3 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Container Kartu */
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+      backdrop-filter: blur(5px);
+      max-width: 90%;
+      width: 400px;
+      z-index: 10;
+      animation: popIn 1s ease-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+      color: var(--heart);
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: var(--text);
+      font-size: 1.1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .heart-icon {
+      font-size: 4rem;
+      color: var(--heart);
+      animation: heartbeat 1.2s infinite;
+      margin: 10px 0;
+    }
+
+    @keyframes heartbeat {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1); }
+      50% { transform: scale(1); }
+      75% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* Tombol */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-yes {
+      background: linear-gradient(45deg, #ff4081, #f50057);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(245, 0, 87, 0.4);
+    }
+
+    .btn-yes:hover { transform: scale(1.05); }
+
+    /* Floating Hearts Background */
+    .floating-hearts span {
+      position: absolute;
+      bottom: -50px;
+      font-size: 20px;
+      color: rgba(255, 0, 100, 0.6);
+      animation: fly 6s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes fly {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Overlay untuk Memancing Klik Pertama (Agar Musik Jalan) */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      color: white;
+      flex-direction: column;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Overlay Wajib: Browser memblokir autoplay audio jika user belum interaksi (klik).
+       Jadi kita paksa user klik sekali di awal untuk buka surat + nyalakan musik. -->
+  <div id="overlay" onclick="bukaSurat()">
+    <div style="font-size: 3rem;">💌</div>
+    <p>Ada surat buat kamu.<br>Klik layar untuk membuka...</p>
+  </div>
+
+  <!-- Musik dari Folder Lokal -->
+  <!-- Pastikan file ada di: folder 'musik' -> 'lagu-romantis.mp3' -->
+  <audio id="musikku" loop>
+    <source src="musik/lagu-romantis.mp3.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <!-- Latar Belakang Hati -->
+  <div class="floating-hearts" id="bg-hearts"></div>
+
+  <!-- Konten Utama -->
+  <div class="card">
+    <div class="heart-icon">💖</div>
+    <h1>Hai, Nur Faisa</h1>
+    <p>
+      Aku nggak pinter merangkai kata-kata.<br>
+      Tapi aku cuma mau bilang satu hal...<br><br>
+      Senyum kamu itu candu buat aku.<br>
+      Maukah kamu jadi pacarku?
+    </p>
+    
+    <div class="btn-group">
+      <button class="btn btn-yes" onclick="terimaCinta()">Iya, Aku Mau ❤️</button>
+      <button class="btn" style="background:#ddd; color:#555" onclick="tolakCinta(this)">Maaf, Nggak Dulu</button>
+    </div>
+  </div>
+
+  <script>
+    // Fungsi Efek Hati Berterbangan
+    function createHeart() {
+      const heart = document.createElement("span");
+      heart.innerHTML = "❤️";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+      heart.style.fontSize = Math.random() * 20 + 10 + "px";
+      document.getElementById("bg-hearts").appendChild(heart);
+      setTimeout(() => heart.remove(), 5000);
+    }
+    setInterval(createHeart, 300);
+
+    // Fungsi Buka Surat & Putar Musik
+    function bukaSurat() {
+      const musik = document.getElementById("musikku");
+      const overlay = document.getElementById("overlay");
+
+      // Hilangkan overlay
+      overlay.style.transition = "opacity 0.5s";
+      overlay.style.opacity = "0";
+      setTimeout(() => overlay.style.display = "none", 500);
+
+      // Coba putar musik
+      musik.play().catch(error => {
+        alert("Musik tidak bisa diputar otomatis. Silakan tap layar sekali lagi.");
+      });
+    }
+
+    // Fungsi Saat Diterima
+    function terimaCinta() {
+      alert("Yeay! Makasih udah nerima aku! 💘\nAku janji bakal bahagiain kamu terus! I Love You!");
+      // Efek ledakan hati lebih banyak
+      setInterval(createHeart, 50); 
+      document.querySelector("h1").innerText = "Resmi Jadian! 👩‍❤️‍👨";
+      document.querySelector("p").innerText = "Tanggal jadian kita: " + new Date().toLocaleDateString();
+      document.querySelector(".btn-group").style.display = "none";
+    }
+
+    // Fungsi Tombol Tolak (Lari-lari)
+    function tolakCinta(btn) {
+      const x = Math.random() * (window.innerWidth - 100);
+      const y = Math.random() * (window.innerHeight - 50);
+      btn.style.position = "fixed";
+      btn.style.left = x + "px";
+      btn.style.top = y + "px";
+    }
+  </script>
+</body>
+</html>
